@@ -1,31 +1,75 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { posts } from "~/server/db/schema";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from '~/server/api/trpc';
 
 export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
+  getPosts: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const tickets = await ctx.db.post.findMany({
+        where: {
+          userId: ctx.userId,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
       return {
-        greeting: `Hello ${input.text}`,
+        tickets: tickets,
+        success: true,
       };
-    }),
+    } catch (error) {
+      return {
+        success: false,
+        error: 'something went wrong',
+      };
+    }
+  }),
 
-  create: publicProcedure
-    .input(z.object({ name: z.string().min(1) }))
+  create: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        description: z.string().min(10),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
-      // simulate a slow db call
+      // simulate a slow db call for the loading effect
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      await ctx.db.insert(posts).values({
-        name: input.name,
-      });
+      try {
+        await ctx.db.post.create({
+          data: {
+            name: input.name,
+            email: input.email,
+            description: input.description,
+            userId: ctx.userId,
+            status: 'OPEN',
+          },
+        });
+        return {
+          success: true,
+        };
+      } catch (error) {
+        throw new Error('Failed to create post');
+      }
     }),
 
-  getLatest: publicProcedure.query(({ ctx }) => {
-    return ctx.db.query.posts.findFirst({
-      orderBy: (posts, { desc }) => [desc(posts.createdAt)],
-    });
-  }),
+  getTicket: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      return ctx.db.post.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 });
