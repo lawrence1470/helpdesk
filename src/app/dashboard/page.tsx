@@ -66,7 +66,7 @@ export default function Page() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createPost.mutate(values);
+    createPost.mutate(values);
     form.reset();
   }
 

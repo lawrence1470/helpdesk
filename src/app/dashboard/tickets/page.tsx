@@ -44,7 +44,7 @@ export default async function Page() {
           </TableHeader>
           <TableBody>
             {posts.tickets.map((post) => (
-              <TableRow>
+              <TableRow key={post.id}>
                 <TableCell className="font-medium">
                   {convertDate(post.createdAt)}
                 </TableCell>
