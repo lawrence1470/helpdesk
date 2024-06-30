@@ -1,10 +1,7 @@
 import { z } from 'zod';
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from '~/server/api/trpc';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
+import { clerkClient } from '@clerk/nextjs/server';
 
 export const postRouter = createTRPCRouter({
   getPosts: protectedProcedure.query(async ({ ctx }) => {
@@ -17,6 +14,31 @@ export const postRouter = createTRPCRouter({
           createdAt: 'desc',
         },
       });
+      return {
+        tickets: tickets,
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: 'something went wrong',
+      };
+    }
+  }),
+  getAdminPosts: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const userId = ctx.userId;
+      const user = await clerkClient.users.getUser(userId);
+      const isAdmin = user.publicMetadata?.role === 'admin';
+      if (!isAdmin) {
+        throw new Error('You are not an admin');
+      }
+      const tickets = await ctx.db.post.findMany({
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+      console.log(tickets, 'tickets are cool');
       return {
         tickets: tickets,
         success: true,
@@ -69,6 +91,22 @@ export const postRouter = createTRPCRouter({
       return ctx.db.post.findFirst({
         where: {
           id: input.id,
+        },
+      });
+    }),
+  resolveTicket: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          status: 'CLOSED',
         },
       });
     }),

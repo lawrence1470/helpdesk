@@ -8,6 +8,8 @@ import {
 } from '~/components/ui/navigation-menu';
 import { ModeToggle } from '~/components/toggle-dark-mode';
 import { UserButton } from '@clerk/nextjs';
+import { Paragraph, Subtitle } from '~/components/ui/typography';
+import { Alert } from '~/components/ui/alert';
 import { api } from '~/trpc/server';
 import { redirect } from 'next/navigation';
 
@@ -19,25 +21,25 @@ export default async function Layout({
   const user = await api.user.getUserAdmin();
   const isAdmin = user.isAdmin;
 
-  if (isAdmin) {
-    redirect('/admin/dashboard');
+  // If the user does not have the admin role, redirect them to the home page
+  if (!isAdmin) {
+    redirect('/admin/sign-in');
   }
   return (
     <div>
+      <Alert>
+        <Subtitle>This is the admin dashboard</Subtitle>
+        <Paragraph>
+          This page is restricted to users with the admin role.
+        </Paragraph>
+      </Alert>
       <div className={'flex justify-center py-10'}>
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <Link href="/dashboard" legacyBehavior passHref>
+              <Link href="/admin/dashboard" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Home
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/dashboard/tickets" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  My Tickets
+                  All Tickets
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
