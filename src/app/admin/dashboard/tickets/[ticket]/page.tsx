@@ -28,18 +28,8 @@ export default function Page({
       toast.success('Ticket resolved!');
       await post.refetch();
     },
-    onError: (error) => {
+    onError: (_error) => {
       toast.error('Failed to resolve ticket');
-    },
-  });
-
-  const onOpen = api.post.openTicket.useMutation({
-    onSuccess: async () => {
-      toast.success('Ticket opened!');
-      await post.refetch();
-    },
-    onError: (error) => {
-      toast.error('Failed to open ticket');
     },
   });
 
@@ -85,14 +75,8 @@ export default function Page({
         </Button>
       )}
       {post && post.data?.status === 'CLOSED' && (
-        <Button
-          disabled={onOpen.isPending || post.isRefetching}
-          onClick={async () => {
-            await onOpen.mutateAsync({ id: ticket });
-          }}
-          className={'mt-10'}
-        >
-          Open
+        <Button disabled={true} className={'mt-10'}>
+          To ReOpen ticket please reach out to support
         </Button>
       )}
     </div>
