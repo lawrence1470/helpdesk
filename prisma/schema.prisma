@@ -23,7 +23,6 @@ enum Status {
 model Post {
   id        String   @id @default(cuid())
   userId    String
-  email     String
   description String
   status   Status
   createdAt DateTime @default(now())
