@@ -37,7 +37,6 @@ export default async function Page() {
               <TableHead className="w-[100px]">Date Opened</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Email used</TableHead>
               <TableHead className="text-right">Description</TableHead>
               <TableHead className="text-right">View</TableHead>
             </TableRow>
@@ -57,7 +56,6 @@ export default async function Page() {
                 </TableCell>
                 <TableCell>{post.name}</TableCell>
 
-                <TableCell>{post.email}</TableCell>
                 <TableCell className="text-right">
                   {truncate(post.description, 25)}
                 </TableCell>
