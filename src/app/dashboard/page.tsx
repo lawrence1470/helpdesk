@@ -31,9 +31,6 @@ const formSchema = z.object({
     .max(50, {
       message: 'Username must be at most 50 characters.',
     }),
-  email: z.string().email({
-    message: 'Invalid email address.',
-  }),
   description: z
     .string()
     .min(10, {
@@ -51,7 +48,7 @@ export default function Page() {
     onSuccess: () => {
       toast.success('Ticket created successfully');
     },
-    onError: (error) => {
+    onError: (_error) => {
       toast.error('Failed to create Ticket');
     },
   });
