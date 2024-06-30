@@ -50,7 +50,7 @@ export default async function Layout({
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <div className={'px-10 py-10 flex justify-center items-center'}>
+      <div className={'px-3 md:px-10 py-10 flex justify-center items-center'}>
         {children}
       </div>
     </div>
