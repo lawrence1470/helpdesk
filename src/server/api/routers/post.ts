@@ -2,6 +2,9 @@ import { z } from 'zod';
 
 import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { clerkClient } from '@clerk/nextjs/server';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API);
 
 export const postRouter = createTRPCRouter({
   getPosts: protectedProcedure.query(async ({ ctx }) => {
@@ -94,6 +97,23 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
+  openTicket: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          status: 'OPEN',
+        },
+      });
+    }),
+
   resolveTicket: protectedProcedure
     .input(
       z.object({

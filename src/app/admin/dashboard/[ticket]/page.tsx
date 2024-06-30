@@ -33,6 +33,20 @@ export default async function Page({
     }
   }
 
+  async function onOpen() {
+    const resolve = await api.post.openTicket({ id: ticket });
+
+    if (resolve) {
+      toast('Ticket Opened!', {
+        type: 'success',
+      });
+    } else {
+      toast('Failed to open ticket', {
+        type: 'error',
+      });
+    }
+  }
+
   return (
     <div className={'w-full'}>
       <Link href={'/dashboard/admin'} passHref className={'mb-10'}>
@@ -46,9 +60,16 @@ export default async function Page({
         </Alert>
       )}
 
-      <Button onClick={onResolve} className={'mt-10'}>
-        Resolve
-      </Button>
+      {post && post.status === 'OPEN' && (
+        <Button className={'mt-10'}>
+          <div onClick={onResolve}>Resolve</div>
+        </Button>
+      )}
+      {post && post.status === 'CLOSED' && (
+        <Button className={'mt-10'}>
+          <div onClick={onOpen}>Open</div>
+        </Button>
+      )}
     </div>
   );
 }
