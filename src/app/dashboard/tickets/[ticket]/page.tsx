@@ -20,7 +20,7 @@ export default async function Page({
 
   return (
     <div className={'w-full'}>
-      <Link href={'/dashboard/admin'} passHref className={'mb-10'}>
+      <Link href={'/dashboard/tickets'} passHref className={'mb-10'}>
         <Button variant={'outline'}>Go Back</Button>
       </Link>
       {post && (

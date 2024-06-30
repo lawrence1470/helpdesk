@@ -58,7 +58,6 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string().min(1),
-        email: z.string().email(),
         description: z.string().min(10),
       }),
     )
@@ -70,7 +69,6 @@ export const postRouter = createTRPCRouter({
         await ctx.db.post.create({
           data: {
             name: input.name,
-            email: input.email,
             description: input.description,
             userId: ctx.userId,
             status: 'OPEN',
@@ -90,7 +88,9 @@ export const postRouter = createTRPCRouter({
         id: z.string(),
       }),
     )
-    .query(({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       return ctx.db.post.findFirst({
         where: {
           id: input.id,
@@ -120,7 +120,34 @@ export const postRouter = createTRPCRouter({
         id: z.string(),
       }),
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
+      const post = await ctx.db.post.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!post) {
+        throw new Error('ticket not found');
+      }
+      const user = await clerkClient.users.getUser(post.userId);
+      const email = user.emailAddresses.find(
+        (email) => email.id === user.primaryEmailAddressId,
+      );
+      if (!email) {
+        throw new Error('User has no email');
+      }
+      console.log(email, 'this is the email');
+      const { data, error } = await resend.emails.send({
+        from: 'lawrence@thedinnertable.club',
+        to: email.emailAddress,
+        subject: 'Ticket resolved',
+        html: '<strong>Your ticket has been resolved</strong>',
+      });
+
+      if (error) {
+        throw new Error('Failed to send email');
+      }
       return ctx.db.post.update({
         where: {
           id: input.id,

@@ -60,7 +60,6 @@ export default function Page() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      email: '',
       description: '',
     },
   });
@@ -96,28 +95,6 @@ export default function Page() {
                     </FormControl>
                     <FormDescription>
                       The name we will use to address you.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={
-                          form.formState.isSubmitting || createPost.isPending
-                        }
-                        placeholder="Norris@gmail.com"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      We will use this email to contact you.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
