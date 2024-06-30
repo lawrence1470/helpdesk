@@ -5,6 +5,7 @@ import { Terminal } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import { Skeleton } from '~/components/ui/skeleton';
 
 import { api } from '~/trpc/react';
 
@@ -23,9 +24,9 @@ export default function Page({
   const post = api.post.getTicket.useQuery({ id: ticket });
 
   const onResolve = api.post.resolveTicket.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success('Ticket resolved!');
-      post.refetch();
+      await post.refetch();
     },
     onError: (error) => {
       toast.error('Failed to resolve ticket');
@@ -33,9 +34,9 @@ export default function Page({
   });
 
   const onOpen = api.post.openTicket.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success('Ticket opened!');
-      post.refetch();
+      await post.refetch();
     },
     onError: (error) => {
       toast.error('Failed to open ticket');
