@@ -5,7 +5,6 @@ import { Terminal } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
-import { Skeleton } from '~/components/ui/skeleton';
 
 import { api } from '~/trpc/react';
 
