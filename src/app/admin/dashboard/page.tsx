@@ -1,5 +1,7 @@
+'use client';
+
 import { redirect } from 'next/navigation';
-import { api } from '~/trpc/server';
+import { api } from '~/trpc/react';
 import {
   Table,
   TableBody,
@@ -12,9 +14,21 @@ import {
 import { Badge } from '~/components/ui/badge';
 import Link from 'next/link';
 import { Button } from '~/components/ui/button';
+import { Skeleton } from '~/components/ui/skeleton';
 
-export default async function AdminDashboard() {
-  const posts = await api.post.getAdminPosts();
+export default function AdminDashboard() {
+  const posts = api.post.getAdminPosts.useQuery();
+
+  if (posts.isLoading) {
+    return (
+      <div className="flex items-center space-x-4">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div>
+    );
+  }
 
   if (posts.error) {
     redirect('/');
@@ -34,7 +48,7 @@ export default async function AdminDashboard() {
 
   return (
     <div className={'w-full'}>
-      {posts.tickets && (
+      {posts.data?.tickets && (
         <Table>
           <TableCaption>A list of all submitted tickets.</TableCaption>
           <TableHeader>
@@ -47,7 +61,7 @@ export default async function AdminDashboard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {posts.tickets.map((post) => (
+            {posts.data?.tickets.map((post) => (
               <TableRow key={post.id}>
                 <TableCell className="font-medium">
                   {convertDate(post.createdAt)}
