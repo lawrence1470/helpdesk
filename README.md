@@ -18,6 +18,8 @@ After researching, I discovered the T3 stack, a boilerplate full-stack project. 
 - Dark and light mode toggle.
 - Mobile and desktop considerations when it came to styling.
 - Validation on the frontend on the ticket form.
+- caching of the tickets to reduce API calls.
+- skeleton loaders to show loading state.
 
 ### Things I would add:
 - Allowing the admin to delete tickets.
