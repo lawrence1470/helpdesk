@@ -5,7 +5,7 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 ### Summary
 
 For this project, I conducted research into the tech stack I was going to use to efficiently build a dashboard. I am a big fan of TypeScript and Next.js, so I wanted to use a solution that allowed me to integrate the frontend and backend into one repository while maintaining type safety.
-After researching, I discovered the T3 stack, a boilerplate full-stack project. For easy authentication, I used Clerk and also incorporated Shadui to create a clean UI.
+After researching, I discovered the T3 stack, a boilerplate full-stack project. For easy authentication, I used Clerk and also incorporated Shadui to create a clean UI. Lastly, i used resend API for emails.
 
 ### Features:
 - Admins and users can view and manage a list of tickets in a table format.
