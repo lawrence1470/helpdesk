@@ -41,6 +41,9 @@ To access the admin workflow you need a username and password. The username is l
 - role based user access.
 
 ### Things I would add:
+- pagination on the table
+- being able to filter tickets by status
+- being able to search for tickets
 - Allowing the admin to delete tickets.
 - Admins should also be able to reopen tickets and reassign them.
 - Better UI/UX.
