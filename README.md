@@ -17,11 +17,13 @@ To access the admin workflow you need a username and password. The username is l
 2. When signing up please use a real email address as the emails will be sent when a user's ticket is closed. I recommend using the google authentication method as it is the easiest. Dont worry i dont collect any data.
 3. As a user, you can create a ticket by clicking on the "Create Ticket" button. in the home page.
 4. Then you can view your ticket in the dashboard.
+5. logout and test the admin workflow.
 
 ### Admin Workflow:
 1. First login as an admin. You can do this by clicking on the "Admin Login" button in the home page. Use the passwords provided above.
 2. As an admin, you can view all the tickets created by users in the dashboard.
 3. You can resolve a ticket by clicking on the "Resolve" button. An email will be sent to the user notifying them that their ticket has been resolved.
+4. You can logout and test the user workflow again if you wish. Try it with a different email address.
 
 ### Features:
 - Admins and users can view and manage a list of tickets in a table format.
