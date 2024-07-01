@@ -1,29 +1,32 @@
-# Create T3 App
+# Help Desk Support Project
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-## What's next? How do I make an app with this?
+### Summary
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+For this project, I conducted research into the tech stack I was going to use to efficiently build a dashboard. I am a big fan of TypeScript and Next.js, so I wanted to use a solution that allowed me to integrate the frontend and backend into one repository while maintaining type safety.
+After researching, I discovered the T3 stack, a boilerplate full-stack project. For easy authentication, I used Clerk and also incorporated Shadui to create a clean UI.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+### Features:
+- Admins and users can view and manage a list of tickets in a table format.
+- Admins can resolve tickets, and an email is sent to the original creator of the ticket to notify them that it was resolved.
+- All buttons/inputs are disabled when a user/admin is submitting information or making a request to ensure clean data across the APIs.
+- A toast message will display if an API call is successful or not.
+- Login/signup for regular users.
+- Different dashboard views for an admin vs user.
+- Login for an Admin (I chose to have only a login for an admin because it didn't make sense to have an admin signup—in the real world, I think admins will be invited to an application. Clerk has this feature, but I didn't integrate it because of time constraints).
+- Dark and light mode toggle.
+- Mobile and desktop considerations when it came to styling.
+- Validation on the frontend on the ticket form.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+### Things I would add:
+- Allowing the admin to delete tickets.
+- Admins should also be able to reopen tickets and reassign them.
+- Better UI/UX.
+- Allowing admins to join an organization through email.
+- Code could use some cleaning up, and I didn’t really pay attention to my commits (in a work environment, I would not do this as commits are important for collaboration).
+- Better error handling and writing of tests on the backend. Most of the error handling was on the frontend.
+- Probably could do a lot more things, but hopefully, you like the project! Let me know if there is anything else you'd like me to add.
 
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+### Conclusion:
+All in all, this was a very fun project because I got to try new technologies. Time-wise, I think this project took around 8 hours to complete.
