@@ -15,7 +15,7 @@ import { cookies } from 'next/headers';
  */
 
 export const createContext = cache(() => {
-  const URL = process.env.VERCEL_URL || 'http://localhost:3000';
+  const URL = process.env.VERCEL_URL ?? 'http://localhost:3000';
 
   return createTRPCContext({
     headers: new Headers({
