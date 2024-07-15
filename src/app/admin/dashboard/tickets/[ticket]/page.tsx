@@ -53,10 +53,6 @@ export default function Page({
   };
 }) {
   const ticket = params.ticket;
-  if (!ticket || typeof ticket !== 'string') {
-    return <div>Invalid ticket</div>;
-  }
-
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,6 +66,9 @@ export default function Page({
       status: '',
     },
   });
+  if (!ticket || typeof ticket !== 'string') {
+    return <div>Invalid ticket</div>;
+  }
 
   const post = api.post.getTicket.useQuery({ id: ticket });
 
