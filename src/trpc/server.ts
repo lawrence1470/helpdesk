@@ -15,14 +15,14 @@ import { cookies } from 'next/headers';
  */
 
 export const createContext = cache(() => {
-  const URL = process.env.VERCEL_URL ?? 'http://localhost:3000';
-
   return createTRPCContext({
     headers: new Headers({
       cookie: cookies().toString(),
       'x-trpc-source': 'rsc',
     }),
-    auth: getAuth(new NextRequest(URL, { headers: headers() })),
+    auth: getAuth(
+      new NextRequest('https://notused.com', { headers: headers() }),
+    ),
   });
 });
 
