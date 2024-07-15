@@ -185,14 +185,33 @@ export const postRouter = createTRPCRouter({
         PROGRESS: 'PROGRESS',
       };
 
-      return ctx.db.post.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          // @ts-ignore
-          status: statusType[input.status],
-        },
-      });
+      if (input.status === 'PROGRESS') {
+        return ctx.db.post.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            status: 'PROGRESS',
+          },
+        });
+      } else if (input.status === 'CLOSED') {
+        return ctx.db.post.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            status: 'CLOSED',
+          },
+        });
+      } else {
+        return ctx.db.post.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            status: 'OPEN',
+          },
+        });
+      }
     }),
 });
