@@ -17,6 +17,7 @@ datasource db {
 enum Status {
   OPEN
   CLOSED
+  PROGRESS
 }
 
 
@@ -27,5 +28,6 @@ model Post {
   status   Status
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  message String @default("")
   name      String
 }

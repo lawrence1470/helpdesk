@@ -41,7 +41,6 @@ export const postRouter = createTRPCRouter({
           createdAt: 'desc',
         },
       });
-      console.log(tickets, 'tickets are cool');
       return {
         tickets: tickets,
         success: true,
@@ -91,11 +90,22 @@ export const postRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      return ctx.db.post.findFirst({
+      const post = await ctx.db.post.findFirst({
         where: {
           id: input.id,
         },
       });
+
+      if (!post) {
+        throw new Error('ticket not found');
+      }
+
+      const user = await clerkClient.users.getUser(post.userId);
+      const email = user.emailAddresses.find(
+        (email) => email.id === user.primaryEmailAddressId,
+      );
+
+      return { ...post, email: email?.emailAddress };
     }),
   openTicket: protectedProcedure
     .input(
@@ -118,6 +128,7 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
+        message: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -137,23 +148,50 @@ export const postRouter = createTRPCRouter({
       if (!email) {
         throw new Error('User has no email');
       }
-      console.log(email, 'this is the email');
+
       const { data, error } = await resend.emails.send({
-        from: 'lawrence@thedinnertable.club',
+        from: 'hello@thedinnertable.club',
         to: email.emailAddress,
-        subject: 'Ticket resolved',
-        html: '<strong>Your ticket has been resolved</strong>',
+        subject: 'Ticket update',
+        html: `<p>${input.message}</p>`,
       });
 
       if (error) {
         throw new Error('Failed to send email');
       }
+
       return ctx.db.post.update({
         where: {
           id: input.id,
         },
         data: {
-          status: 'CLOSED',
+          message: input.message,
+        },
+      });
+
+      return { success: true };
+    }),
+  saveStatus: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        status: z.string(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      const statusType = {
+        OPEN: 'OPEN',
+        CLOSED: 'CLOSED',
+        PROGRESS: 'PROGRESS',
+      };
+
+      return ctx.db.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          // @ts-ignore
+          status: statusType[input.status],
         },
       });
     }),
